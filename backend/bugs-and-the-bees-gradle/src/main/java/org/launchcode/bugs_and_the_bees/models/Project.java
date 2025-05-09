@@ -1,6 +1,7 @@
 package org.launchcode.bugs_and_the_bees.models;
 
 
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 
+@Entity
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
