@@ -1,10 +1,15 @@
 package org.launchcode.bugs_and_the_bees.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -21,6 +26,9 @@ public class User extends AbstractEntity {
     private String pwHash;
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+    @OneToMany(mappedBy = "user")
+    private final List<Project> projects = new ArrayList<>();
 
     public User(String username, String password) {
         this.username = username;
