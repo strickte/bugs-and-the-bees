@@ -11,6 +11,7 @@ import CreateProject from "./CreateProject";
 import "./index.css";
 import UpdateProject from "./UpdateProject";
 import Signout from "./Signout";
+import UserRegistration from "./UserRegistration";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/login" element={<Login />}></Route>
           <Route path="/user-landing" element={<UserLanding />}></Route>
           <Route path="/signout" element={<Signout />}></Route>
+          <Route path="/user-registration" element={<UserRegistration />}></Route>
         </Routes>
       </Router>
     </>

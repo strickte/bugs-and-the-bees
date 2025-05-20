@@ -27,8 +27,8 @@ public class User extends AbstractEntity {
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    @OneToMany(mappedBy = "user")
-    private final List<Project> projects = new ArrayList<>();
+//    @OneToMany(mappedBy = "user")
+//    private final List<Project> projects = new ArrayList<>();
 
     public User(String username, String password) {
         this.username = username;
