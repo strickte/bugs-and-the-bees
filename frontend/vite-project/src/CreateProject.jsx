@@ -1,9 +1,11 @@
+import { stringify } from "openai/internal/qs/stringify.mjs";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const CreateProject = () => {
   const [project, setProject] = useState([]);
   const [formData, setFormData] = useState({
+    name: "",
     totalSkeins: "",
     usedSkeins: "",
     occasion: "",
@@ -17,16 +19,80 @@ const CreateProject = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-const handleSubmit = async (event) => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
+    const inputData = {
+      name: formData.name,
+      totalSkeins: parseInt(formData.totalSkeins),
+      usedSkeins: parseInt(formData.usedSkeins),
+      occasion: formData.occasion,
+      //targetDate: formData.targetDate,
+    };
 
-  
-}
+    try {
+      const saveProject = await fetch("http://localhost:8080/projects", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputData),
+      });
+    } catch (error) {
+      console.error("Submission Error:", error);
+      alert("Something went wrong. Please try again.");
+    }
+  };
 
   return (
     <div>
       <h1 className="text-green-500 text-4xl font-bold">Create a Project</h1>
       <h2 className="italic">Type your project details below</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Project Name: </label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+          ></input>
+        </div>
+        <div>
+          <label>Total Skeins: </label>
+          <input
+            type="text"
+            name="totalSkeins"
+            value={formData.totalSkeins}
+            onChange={handleChange}
+          ></input>
+        </div>
+        <div>
+          <label>Used Skeins: </label>
+          <input
+            type="text"
+            name="usedSkeins"
+            value={formData.usedSkeins}
+            onChange={handleChange}
+          ></input>
+        </div>
+        <div>
+          <label>Occassion: </label>
+          <input
+            type="text"
+            name="occasion"
+            value={formData.occasion}
+            onChange={handleChange}
+          ></input>
+        </div>
+        {/* <label>Target Completion Date</label>
+        <input type="text" name="targetDate" value={formData.targetDate} onChange={handleChange}></input> */}
+        <div>
+          <button type="submit" className="bg-green-600">
+            Save Project
+          </button>
+        </div>
+      </form>
     </div>
   );
 };

@@ -18,4 +18,8 @@ public class ProjectService {
     public Project createProject(Project project) {
         return projectRepository.save(project);
     }
+
+    public Iterable<Project> getAllProjects(){
+        return projectRepository.findAll();
+    }
 }

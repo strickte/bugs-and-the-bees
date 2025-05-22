@@ -23,10 +23,14 @@ import java.time.LocalDate;
 @EqualsAndHashCode(callSuper = true)
 public class Project extends AbstractEntity {
 
-    @PositiveOrZero
+    @NotBlank
+    @Size(min = 3, max = 75, message = "Name must be between 3 and 75 characters")
+    private String name;
+
+    @PositiveOrZero(message = "Total skeins must be positive or zero")
     private int totalSkeins;
 
-    @PositiveOrZero
+    @PositiveOrZero(message = "Total skeins must be positive or zero")
     private int usedSkeins;
 
     //occasion i.e. Christmas, new baby, etc.
@@ -35,8 +39,8 @@ public class Project extends AbstractEntity {
     private String occasion;
 
     //target completion date
-    @NotNull(message = "Completion goal is required")
-    private LocalDate targetDate;
+//    @NotNull(message = "Completion goal is required")
+//    private LocalDate targetDate;
 
     //photo url from Unsplash derived from occasion
 //    @NotNull

@@ -22,4 +22,9 @@ private final ProjectService projectService;
     public Project createProject(@RequestBody Project project){
         return projectService.createProject(project);
     }
+
+    @GetMapping("/user-landing")
+    public Iterable<Project> getAllUserProjects(){
+        return projectService.getAllProjects();
+    }
 }
