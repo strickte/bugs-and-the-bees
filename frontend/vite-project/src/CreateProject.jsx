@@ -1,4 +1,3 @@
-import { stringify } from "openai/internal/qs/stringify.mjs";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -9,13 +8,13 @@ const CreateProject = () => {
     totalSkeins: "",
     usedSkeins: "",
     occasion: "",
-    targetDate: "",
+    // targetDate: "",
     //  photoUrl: "",
     // user: "",
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleChange = (event) => {
+    const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
