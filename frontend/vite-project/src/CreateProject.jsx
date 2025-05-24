@@ -10,7 +10,7 @@ const CreateProject = () => {
     occasion: "",
     // targetDate: "",
     //  photoUrl: "",
-    // user: "",
+    // userId: "",
   });
 
   const handleChange = (event) => {
@@ -27,6 +27,7 @@ const CreateProject = () => {
       usedSkeins: parseInt(formData.usedSkeins),
       occasion: formData.occasion,
       //targetDate: formData.targetDate,
+      //userId: 
     };
 
     try {

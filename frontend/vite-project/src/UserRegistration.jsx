@@ -7,8 +7,8 @@ const UserRegistration = () => {
     password: "",
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleChange = (event) => {
+    const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
@@ -17,9 +17,11 @@ const UserRegistration = () => {
     password: formData.password,
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
     try {
-      console.log("pre-saveUser");
+      console.log(inputData);
       const saveUser = await fetch("http://localhost:8080/auth", {
         method: "POST",
         headers: {
@@ -28,6 +30,8 @@ const UserRegistration = () => {
         body: JSON.stringify(inputData),
       });
     } catch (error) {
+      console.log("catch");
+      console.log(error);
       console.error("Submission error: ", error);
       alert("Something went wrong. Please try again.");
     }
@@ -54,7 +58,6 @@ const UserRegistration = () => {
             name="password"
             value={formData.password}
             onChange={handleChange}
-            autoComplete="off"
           ></input>
         </div>
         <div>
