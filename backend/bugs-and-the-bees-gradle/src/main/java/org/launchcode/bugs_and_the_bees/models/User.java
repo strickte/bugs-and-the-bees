@@ -28,14 +28,12 @@ public class User extends AbstractEntity {
     @Getter
     private String password;
 
-//    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 //    @OneToMany(mappedBy = "user")
 //    private final List<Project> projects = new ArrayList<>();
 
     public User(String username, String password) {
         this.username = username;
-//        this.pwHash = encoder.encode(password);
         this.password = password;
     }
 

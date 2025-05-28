@@ -24,4 +24,6 @@ public class UserService {
         User dbUser = new User(user.getUsername(), pwHash);
         return userRepository.save(dbUser);
     }
+
+
 }

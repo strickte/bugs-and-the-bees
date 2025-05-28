@@ -43,8 +43,10 @@ public class Project extends AbstractEntity {
 //    private LocalDate targetDate;
 
     //photo url from Unsplash derived from occasion
-//    @NotNull
-//    private String photoUrl;
+    @NotNull
+    private String photoUrl;
+
+
 
 //    @ManyToOne
 //    @NotNull

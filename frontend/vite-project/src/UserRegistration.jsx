@@ -5,6 +5,7 @@ const UserRegistration = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
+    confirmPassword: "",
   });
 
   const handleChange = (event) => {
@@ -12,28 +13,31 @@ const UserRegistration = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const inputData = {
-    username: formData.username,
-    password: formData.password,
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    try {
-      console.log(inputData);
-      const saveUser = await fetch("http://localhost:8080/auth", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(inputData),
-      });
-    } catch (error) {
-      console.log("catch");
-      console.log(error);
-      console.error("Submission error: ", error);
-      alert("Something went wrong. Please try again.");
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match");
+    } else {
+      try {
+        const inputData = {
+          username: formData.username,
+          password: formData.password,
+        };
+
+        const saveUser = await fetch("http://localhost:8080/auth", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(inputData),
+        });
+      } catch (error) {
+        console.log("catch");
+        console.log(error);
+        console.error("Submission error: ", error);
+        alert("Something went wrong. Please try again.");
+      }
     }
   };
 
@@ -57,6 +61,15 @@ const UserRegistration = () => {
             type="password"
             name="password"
             value={formData.password}
+            onChange={handleChange}
+          ></input>
+        </div>
+        <div>
+          <label> Confirm Your Password: </label>
+          <input
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
             onChange={handleChange}
           ></input>
         </div>

@@ -21,16 +21,35 @@ const CreateProject = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const inputData = {
-      name: formData.name,
-      totalSkeins: parseInt(formData.totalSkeins),
-      usedSkeins: parseInt(formData.usedSkeins),
-      occasion: formData.occasion,
-      //targetDate: formData.targetDate,
-      //userId: 
-    };
-
     try {
+      console.log("pre-UnSplash API Key");
+      const apiKeyUnsplash = import.meta.env.VITE_APP_API_KEY;
+      console.log("post-API Key");
+      const fetchedPhoto = await fetch(
+        `https://api.unsplash.com/search/photos?page=1&query=${formData.occasion}&client_id=${apiKeyUnsplash}`,
+        {
+          method: "GET",
+        }
+      );
+
+      if (!fetchedPhoto.ok) {
+        throw new Error("Photo fetch failed");
+      }
+      const photoData = await fetchedPhoto.json();
+      const photoResult = photoData.results[0].urls.thumb;
+      console.log(photoResult);
+
+      const inputData = {
+        name: formData.name,
+        photoUrl: photoResult,
+        totalSkeins: parseInt(formData.totalSkeins),
+        usedSkeins: parseInt(formData.usedSkeins),
+        occasion: formData.occasion,
+
+        //targetDate: formData.targetDate,
+        //userId:
+      };
+
       const saveProject = await fetch("http://localhost:8080/projects", {
         method: "POST",
         headers: {
