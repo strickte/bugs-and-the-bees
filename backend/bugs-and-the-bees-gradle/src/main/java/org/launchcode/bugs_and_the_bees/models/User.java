@@ -25,20 +25,21 @@ public class User extends AbstractEntity {
 
 
     @NotNull
-    @Getter
-    private String password;
+    private String pwHash;
 
 
 //    @OneToMany(mappedBy = "user")
 //    private final List<Project> projects = new ArrayList<>();
 
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
     public User(String username, String password) {
         this.username = username;
-        this.password = password;
+        this.pwHash = encoder.encode(password);
     }
 
-//    public boolean isMatchingPassword(String password) {
-//        return encoder.matches(password, pwHash);
-//    }
+    public boolean isMatchingPassword(String password) {
+        return encoder.matches(password, pwHash);
+    }
 
 }

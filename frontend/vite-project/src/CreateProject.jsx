@@ -9,8 +9,7 @@ const CreateProject = () => {
     usedSkeins: "",
     occasion: "",
     // targetDate: "",
-    //  photoUrl: "",
-    // userId: "",
+     // userId: "",
   });
 
   const handleChange = (event) => {
@@ -22,9 +21,8 @@ const CreateProject = () => {
     event.preventDefault();
 
     try {
-      console.log("pre-UnSplash API Key");
-      const apiKeyUnsplash = import.meta.env.VITE_APP_API_KEY;
-      console.log("post-API Key");
+           const apiKeyUnsplash = import.meta.env.VITE_APP_API_KEY;
+
       const fetchedPhoto = await fetch(
         `https://api.unsplash.com/search/photos?page=1&query=${formData.occasion}&client_id=${apiKeyUnsplash}`,
         {
@@ -57,6 +55,14 @@ const CreateProject = () => {
         },
         body: JSON.stringify(inputData),
       });
+      if (saveProject.ok) {
+        const saveProjectData = await saveProject.text();
+        console.log("Success:", saveProjectData);
+        alert("Project created successfully");
+      } else {
+        console.error("Error:", saveProject.status);
+        alert("Project creation failed");
+      }
     } catch (error) {
       console.error("Submission Error:", error);
       alert("Something went wrong. Please try again.");

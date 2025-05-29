@@ -13,32 +13,45 @@ const UserRegistration = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
-    } else {
-      try {
-        const inputData = {
-          username: formData.username,
-          password: formData.password,
-        };
+    // if (formData.password !== formData.confirmPassword) {
+    //   alert("Passwords do not match");
+    // } else {
+    try {
+      const inputData = {
+        username: formData.username,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+      };
 
-        const saveUser = await fetch("http://localhost:8080/auth", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(inputData),
-        });
-      } catch (error) {
-        console.log("catch");
-        console.log(error);
-        console.error("Submission error: ", error);
-        alert("Something went wrong. Please try again.");
+      const saveUser = await fetch("http://localhost:8080/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputData),
+      });
+      if (saveUser.ok) {
+        const saveUserData = await saveUser.text();
+        console.log("Success:", saveUserData);
+        alert("Login Succesful");
+        // navigate("/user-landing");
+      } else {
+        console.error("Error:", saveUser.status);
+        alert("Login failed");
       }
+    } catch (error) {
+      console.log("catch");
+      console.log(error);
+      console.error("Submission error: ", error);
+      alert("Something went wrong. Please try again.");
     }
+    // }
+    
   };
 
   return (
