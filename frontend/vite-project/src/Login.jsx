@@ -16,7 +16,7 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+ 
     try {
       const inputData = {
         username: formData.username,
@@ -29,22 +29,26 @@ const Login = () => {
         },
         body: JSON.stringify(inputData),
       });
+
+      const loginUserData = await loginUser.json();
+      
+
       if (loginUser.ok) {
-        const loginUserData = await loginUser.text();
-        console.log("Success:", loginUserData);
-        alert("Login Succesful");
+        const message = loginUserData.message;
+        console.log("Success: ", message);
+        alert(message);
         // navigate("/user-landing");
       } else {
-        console.error("Error:", loginUser.status);
-        alert("Login failed");
+        Object.entries(loginUserData).forEach(([field, message]) => {
+          console.log(`${field}: ${message}`);
+          alert(`${message}`);
+        });
+        console.log(loginUserData);
       }
     } catch (error) {
-      console.log("catch");
-      console.log(error);
-      console.error("Submission error: ", error);
+      console.log("Submission error: ", error);
       alert("Something went wrong. Please try again.");
     }
-    
   };
 
   return (

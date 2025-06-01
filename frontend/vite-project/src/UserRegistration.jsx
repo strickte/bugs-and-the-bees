@@ -8,19 +8,17 @@ const UserRegistration = () => {
     confirmPassword: "",
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const navigate = useNavigate();
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // if (formData.password !== formData.confirmPassword) {
-    //   alert("Passwords do not match");
-    // } else {
+
     try {
       const inputData = {
         username: formData.username,
@@ -35,23 +33,26 @@ const UserRegistration = () => {
         },
         body: JSON.stringify(inputData),
       });
+
+      const saveUserData = await saveUser.json();
+
       if (saveUser.ok) {
-        const saveUserData = await saveUser.text();
-        console.log("Success:", saveUserData);
-        alert("Login Succesful");
+        const message = saveUserData.message;
+        console.log("Success:", message);
+        alert(message);
         // navigate("/user-landing");
       } else {
-        console.error("Error:", saveUser.status);
-        alert("Login failed");
+        //Object.entries() converts to array
+        Object.entries(saveUserData).forEach(([field, message]) => {
+          console.log(`${field}: ${message}`);
+          alert(`${message}`);
+        });
+        console.log(saveUserData);
       }
     } catch (error) {
-      console.log("catch");
-      console.log(error);
-      console.error("Submission error: ", error);
+      console.log("Submission error: ", error);
       alert("Something went wrong. Please try again.");
     }
-    // }
-    
   };
 
   return (

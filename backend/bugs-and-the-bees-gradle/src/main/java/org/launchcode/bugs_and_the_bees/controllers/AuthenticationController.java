@@ -9,6 +9,7 @@ import org.launchcode.bugs_and_the_bees.models.User;
 import org.launchcode.bugs_and_the_bees.models.dto.RegisterFormDTO;
 import org.launchcode.bugs_and_the_bees.models.dto.LoginFormDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
@@ -49,6 +50,7 @@ public class AuthenticationController {
 
     @PostMapping("/signup")
     public ResponseEntity<Map<String, String>> processRegistrationForm(@RequestBody @Valid RegisterFormDTO registerFormDTO, Errors errors, HttpServletRequest request) throws BadRequestException {
+        Map<String, String> response = new HashMap<>();
 
         //Validation errors from @Valid
         if (errors.hasErrors()) {
@@ -59,14 +61,16 @@ public class AuthenticationController {
 
         //Check is username already exists
        if (userRepository.existsByUsername(registerFormDTO.getUsername())) {
-           throw new BadRequestException("Username already exists");
+           response.put("message", "Username already exists");
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
        }
 
        //Verify password and confirmPassword match
        String password = registerFormDTO.getPassword();
        String confirmPassword = registerFormDTO.getConfirmPassword();
        if (!password.equals(confirmPassword)) {
-           throw new BadRequestException("Passwords do not match");
+           response.put("message", "Passwords do not match");
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
        }
 
        //Save user
@@ -76,13 +80,15 @@ public class AuthenticationController {
        //Set user in session
        setUserInSession(request.getSession(), newUser);
 
-       return ResponseEntity.ok(Map.of("message", "User successfully registered"));
+       return ResponseEntity.ok(Map.of("message", "Successfully registered and logged in"));
     }
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> processLoginForm(@RequestBody @Valid LoginFormDTO loginFormDTO, Errors errors, HttpServletRequest request) throws BadRequestException {
-        //Validation errors from @Valid
-        if (errors.hasErrors()) {
+        Map<String, String> response = new HashMap<>();
+
+        //Validation errors from @Valid using lambda expression
+            if (errors.hasErrors()) {
             Map<String, String> validationErrors = new HashMap<>();
             errors.getFieldErrors().forEach(error -> validationErrors.put(error.getField(), error.getDefaultMessage()));
             return ResponseEntity.badRequest().body(validationErrors);
@@ -91,13 +97,14 @@ public class AuthenticationController {
         //Check user exists
         User theUser = userRepository.findByUsername(loginFormDTO.getUsername());
         if (theUser == null) {
-            throw new BadRequestException("Username does not exist");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message","Username does not exist"));
         }
 
         //Validate password
         String password = loginFormDTO.getPassword();
         if (!theUser.isMatchingPassword(password)) {
-            throw new BadRequestException("Invalid password");
+            response.put("message", "Invalid password");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
         //Set user in session

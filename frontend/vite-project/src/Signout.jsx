@@ -5,7 +5,7 @@ const Signout = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
-    // event.preventDefault();
+    event.preventDefault();
 
     console.log("logout submit")
     try {
@@ -13,13 +13,16 @@ const Signout = () => {
         method: "GET",
         // credentials: "include",
       });
+
+      const signoutData = await signout.json();
+      const message = signoutData.message;
+
       if (signout.ok) {
-        const signoutData = await signout.text();
         console.log("Success:", signoutData);
         alert("Signout Succesful");
-        // navigate("/login");
+        navigate("/login");
       } else {
-        console.error("Error:", signout.status);
+        console.log("Error:", signout.status);
         alert("Signout failed");
       }
     } catch (error) {

@@ -22,4 +22,8 @@ public class ProjectService {
     public Iterable<Project> getAllProjects(){
         return projectRepository.findAll();
     }
+
+    public void deleteByProjectId(Integer id) {
+        projectRepository.deleteById(id);
+    }
 }
