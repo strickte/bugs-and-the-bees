@@ -7,7 +7,7 @@ const Signout = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log("logout submit")
+    console.log("logout submit");
     try {
       const signout = await fetch("http://localhost:8080/api/signout", {
         method: "GET",
@@ -22,8 +22,8 @@ const Signout = () => {
         alert("Signout Succesful");
         navigate("/login");
       } else {
-        console.log("Error:", signout.status);
-        alert("Signout failed");
+        console.log("Error:", message);
+        alert(message);
       }
     } catch (error) {
       console.log("catch");
@@ -31,16 +31,13 @@ const Signout = () => {
       console.error("Submission error: ", error);
       alert("Something went wrong. Please try again.");
     }
-
-    
-   
   };
 
   return (
-    <div className="italic">
+    <div>
       <h1 className={`text-green-500 text-4xl font-bold`}>Signout Page</h1>
       <div>
-        <button onClick={handleSubmit} type="submit"className="bg-green-600">
+        <button onClick={handleSubmit} type="button" className="bg-green-600">
           Signout
         </button>
       </div>

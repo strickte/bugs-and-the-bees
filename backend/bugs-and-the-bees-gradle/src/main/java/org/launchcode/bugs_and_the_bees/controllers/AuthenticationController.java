@@ -29,30 +29,28 @@ public class AuthenticationController {
 
     private static final String userSessionKey = "user";
 
-    public User getUserFromSession(HttpSession session) {
-        Integer userId = (Integer) session.getAttribute(userSessionKey);
-        if (userId == null) {
-            return null;
-        }
-
-        Optional<User> user = userRepository.findById(userId);
-
-        if (user.isEmpty()) {
-            return null;
-        }
-
-        return user.get();
-    }
+//    public User getUserFromSession(HttpSession session) {
+//        Integer userId = (Integer) session.getAttribute(userSessionKey);
+//        if (userId == null) {
+//            return null;
+//        }
+//
+//        Optional<User> user = userRepository.findById(userId);
+//        if (user.isEmpty()) {
+//            return null;
+//        }
+//        return user.get();
+//    }
 
     private static void setUserInSession(HttpSession session, User user) {
         session.setAttribute(userSessionKey, user.getId());
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Map<String, String>> processRegistrationForm(@RequestBody @Valid RegisterFormDTO registerFormDTO, Errors errors, HttpServletRequest request) throws BadRequestException {
+    public ResponseEntity<Map<String, String>> processRegistrationForm(@RequestBody @Valid RegisterFormDTO registerFormDTO, Errors errors, HttpServletRequest request) {
         Map<String, String> response = new HashMap<>();
 
-        //Validation errors from @Valid
+        //Validation errors from @Valid using lambda expression
         if (errors.hasErrors()) {
             Map<String, String> validationErrors = new HashMap<>();
             errors.getFieldErrors().forEach(error -> validationErrors.put(error.getField(), error.getDefaultMessage()));
@@ -84,7 +82,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> processLoginForm(@RequestBody @Valid LoginFormDTO loginFormDTO, Errors errors, HttpServletRequest request) throws BadRequestException {
+    public ResponseEntity<Map<String, String>> processLoginForm(@RequestBody @Valid LoginFormDTO loginFormDTO, Errors errors, HttpServletRequest request) {
         Map<String, String> response = new HashMap<>();
 
         //Validation errors from @Valid using lambda expression

@@ -22,7 +22,7 @@ function App() {
           <Route path="/create-project" element={<CreateProject />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/user-landing" element={<UserLanding />}></Route>
-          <Route path="/logout" element={<Signout />}></Route>
+          <Route path="/signout" element={<Signout />}></Route>
           <Route path="/user-registration" element={<UserRegistration />}></Route>
         </Routes>
       </Router>
