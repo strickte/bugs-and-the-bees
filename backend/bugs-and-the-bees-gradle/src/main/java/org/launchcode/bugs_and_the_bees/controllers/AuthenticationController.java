@@ -8,6 +8,8 @@ import org.launchcode.bugs_and_the_bees.data.UserRepository;
 import org.launchcode.bugs_and_the_bees.models.User;
 import org.launchcode.bugs_and_the_bees.models.dto.RegisterFormDTO;
 import org.launchcode.bugs_and_the_bees.models.dto.LoginFormDTO;
+import org.launchcode.bugs_and_the_bees.models.dto.UserDTO;
+import org.launchcode.bugs_and_the_bees.models.dto.LoginResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,8 +84,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> processLoginForm(@RequestBody @Valid LoginFormDTO loginFormDTO, Errors errors, HttpServletRequest request) {
-        Map<String, String> response = new HashMap<>();
+    public ResponseEntity<?> processLoginForm(@RequestBody @Valid LoginFormDTO loginFormDTO, Errors errors, HttpServletRequest request) {
 
         //Validation errors from @Valid using lambda expression
             if (errors.hasErrors()) {
@@ -101,14 +102,15 @@ public class AuthenticationController {
         //Validate password
         String password = loginFormDTO.getPassword();
         if (!theUser.isMatchingPassword(password)) {
-            response.put("message", "Invalid password");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Invalid password"));
         }
 
-        //Set user in session
+        //Set user in session and LoginResponseDTO
         setUserInSession(request.getSession(), theUser);
+        UserDTO userDTO = new UserDTO(theUser);
+        LoginResponseDTO responseDTO = new LoginResponseDTO("Successfully logged in", userDTO);
 
-        return ResponseEntity.ok(Map.of("message", "Successfully logged in"));
+        return ResponseEntity.ok(responseDTO);
     }
 
     @GetMapping("signout")
