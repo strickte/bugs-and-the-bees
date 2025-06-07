@@ -28,8 +28,8 @@ public class User extends AbstractEntity {
     private String pwHash;
 
 
-//    @OneToMany(mappedBy = "user")
-//    private final List<Project> projects = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    private final List<Project> projects = new ArrayList<>();
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 

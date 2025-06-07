@@ -16,7 +16,7 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
- 
+
     try {
       const inputData = {
         username: formData.username,
@@ -31,11 +31,12 @@ const Login = () => {
       });
 
       const loginUserData = await loginUser.json();
-      
 
       if (loginUser.ok) {
+        const userDTO = loginUserData.userDTO;
+        localStorage.setItem("userDTO", JSON.stringify(userDTO));
         const message = loginUserData.message;
-        console.log("Success: ", message);
+        console.log("Success: ", message, " User: ", userDTO.userDTOName);
         alert(message);
         // navigate("/user-landing");
       } else {

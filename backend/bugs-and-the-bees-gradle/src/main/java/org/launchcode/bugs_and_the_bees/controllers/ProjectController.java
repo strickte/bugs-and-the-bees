@@ -3,6 +3,7 @@ package org.launchcode.bugs_and_the_bees.controllers;
 import jakarta.validation.Valid;
 import org.launchcode.bugs_and_the_bees.data.ProjectRepository;
 import org.launchcode.bugs_and_the_bees.models.Project;
+import org.launchcode.bugs_and_the_bees.models.dto.ProjectDTO;
 import org.launchcode.bugs_and_the_bees.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ private final ProjectService projectService;
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, String>> createProject(@Valid @RequestBody Project project, Errors errors){
+    public ResponseEntity<Map<String, String>> createProject(@Valid @RequestBody ProjectDTO projectDTO, Errors errors){
 
         //Validation errors from @Valid using lambda expression
         if (errors.hasErrors()) {
@@ -34,7 +35,7 @@ private final ProjectService projectService;
             return ResponseEntity.badRequest().body(validationErrors);
         }
 
-        projectService.createProject(project);
+        projectService.createProject(projectDTO);
         return ResponseEntity.ok(Map.of("message", "Project successfully updated"));
     }
 

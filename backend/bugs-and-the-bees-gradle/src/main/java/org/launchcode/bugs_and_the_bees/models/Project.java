@@ -33,23 +33,19 @@ public class Project extends AbstractEntity {
     @PositiveOrZero(message = "Total skeins must be positive or zero")
     private int usedSkeins;
 
-    //occasion i.e. Christmas, new baby, etc.
     @NotBlank(message = "Occasion is required")
     @Size(min = 2, max = 50, message = "Occasion must be between 2 and 50 characters")
     private String occasion;
 
-    //target completion date
-//    @NotNull(message = "Completion goal is required")
-//    private LocalDate targetDate;
+    @NotNull(message = "Completion goal is required")
+    private LocalDate targetDate;
 
-    //photo url from Unsplash derived from occasion
     @NotNull
     private String photoUrl;
 
+    @ManyToOne
+    @NotNull
+    private User user;
 
-
-//    @ManyToOne
-//    @NotNull
-//    private User user;
 }
 

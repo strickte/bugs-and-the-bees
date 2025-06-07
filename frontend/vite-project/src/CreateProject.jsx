@@ -2,15 +2,28 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const CreateProject = () => {
-  const [project, setProject] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     totalSkeins: "",
     usedSkeins: "",
     occasion: "",
-    // targetDate: "",
-     // userId: "",
+    targetDate: "",
   });
+
+  const [userId, setUserId] = useState("");
+
+  useEffect(() => {
+    try {
+      const savedUserDTO = JSON.parse(localStorage.getItem("userDTO"));
+      console.log(savedUserDTO);
+      if (savedUserDTO && savedUserDTO.userDTOId) {
+        setUserId(savedUserDTO.userDTOId);
+      }
+    } catch (error) {
+      console.log("Soemthing went wrong: ", error);
+      alert("Something went wrong. Please try again.");
+    }
+  }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -21,7 +34,7 @@ const CreateProject = () => {
     event.preventDefault();
 
     try {
-           const apiKeyUnsplash = import.meta.env.VITE_APP_API_KEY;
+      const apiKeyUnsplash = import.meta.env.VITE_APP_API_KEY;
 
       const fetchedPhoto = await fetch(
         `https://api.unsplash.com/search/photos?page=1&query=${formData.occasion}&client_id=${apiKeyUnsplash}`,
@@ -43,11 +56,10 @@ const CreateProject = () => {
         totalSkeins: parseInt(formData.totalSkeins),
         usedSkeins: parseInt(formData.usedSkeins),
         occasion: formData.occasion,
-
-        //targetDate: formData.targetDate,
-        //userId:
+        targetDate: formData.targetDate,
+        userId: userId,
       };
-
+      console.log(inputData);
       const saveProject = await fetch("http://localhost:8080/projects", {
         method: "POST",
         headers: {
@@ -110,8 +122,13 @@ const CreateProject = () => {
             onChange={handleChange}
           ></input>
         </div>
-        {/* <label>Target Completion Date</label>
-        <input type="text" name="targetDate" value={formData.targetDate} onChange={handleChange}></input> */}
+        <label>Target Completion Date: </label>
+        <input
+          type="date"
+          name="targetDate"
+          value={formData.targetDate}
+          onChange={handleChange}
+        ></input>
         <div>
           <button type="submit" className="bg-green-600">
             Save Project

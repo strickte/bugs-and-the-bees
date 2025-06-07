@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@CrossOrigin("http://localhost:5173")
+@CrossOrigin(value = "http://localhost:5173", allowCredentials = "true")
 @RequestMapping("/api")
 @RestController
 public class AuthenticationController {

@@ -11,13 +11,14 @@ const Signout = () => {
     try {
       const signout = await fetch("http://localhost:8080/api/signout", {
         method: "GET",
-        // credentials: "include",
+        credentials: "include",
       });
 
       const signoutData = await signout.json();
       const message = signoutData.message;
 
       if (signout.ok) {
+        localStorage.removeItem("userDTO");
         console.log("Success:", signoutData);
         alert("Signout Succesful");
         navigate("/login");
@@ -35,7 +36,9 @@ const Signout = () => {
 
   return (
     <div>
-      <h1 className={`text-green-500 text-4xl font-bold`}>Signout Page</h1>
+      <h1 className={`text-green-500 text-4xl font-bold`}>
+        Are you sure you want to sign out?
+      </h1>
       <div>
         <button onClick={handleSubmit} type="button" className="bg-green-600">
           Signout
