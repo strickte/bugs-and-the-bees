@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const UserLanding = () => {
   const [username, setUsername] = useState("");
@@ -19,6 +20,9 @@ const UserLanding = () => {
     <div>
       <h1 className="text-green-500 text-4xl font-bold">User Landing Page</h1>
       <h2>Hello, {username}!</h2>
+      <div>
+        <Link to="/signout">Signout</Link>
+      </div>
     </div>
   );
 };

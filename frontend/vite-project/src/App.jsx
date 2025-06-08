@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
 import {
   Routes,
   Route,
-  useNavigate,
   BrowserRouter as Router,
 } from "react-router-dom";
 import UserLanding from "./UserLanding";
