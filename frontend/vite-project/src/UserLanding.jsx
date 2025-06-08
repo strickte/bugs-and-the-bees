@@ -11,10 +11,10 @@ const UserLanding = () => {
         setUsername(savedUserDTO.userDTOName);
       }
     } catch (error) {
-      console.log("Soemthing went wrong: ", error);
+      console.log("Something went wrong: ", error);
       alert("Something went wrong. Please try again.");
     }
-  });
+  }, []);
   return (
     <div>
       <h1 className="text-green-500 text-4xl font-bold">User Landing Page</h1>
