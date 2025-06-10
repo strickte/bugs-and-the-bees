@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectDTO {
+public class UpdateProjectDTO {
 
     @NotBlank
     @Size(min = 3, max = 75, message = "Name must be between 3 and 75 characters")

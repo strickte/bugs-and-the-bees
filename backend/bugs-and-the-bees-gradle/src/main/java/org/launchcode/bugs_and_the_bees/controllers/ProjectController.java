@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.launchcode.bugs_and_the_bees.data.ProjectRepository;
 import org.launchcode.bugs_and_the_bees.models.Project;
 import org.launchcode.bugs_and_the_bees.models.dto.ProjectDTO;
+import org.launchcode.bugs_and_the_bees.models.dto.UpdateProjectDTO;
 import org.launchcode.bugs_and_the_bees.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +12,10 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-@CrossOrigin("http://localhost:5173")
+@CrossOrigin(value ="http://localhost:5173")
 @RestController
 @RequestMapping("/projects")
 public class ProjectController {
@@ -26,7 +28,7 @@ private final ProjectService projectService;
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, String>> createProject(@Valid @RequestBody ProjectDTO projectDTO, Errors errors){
+    public ResponseEntity<Map<String, String>> createProject(@RequestBody @Valid ProjectDTO projectDTO, Errors errors){
 
         //Validation errors from @Valid using lambda expression
         if (errors.hasErrors()) {
@@ -36,12 +38,24 @@ private final ProjectService projectService;
         }
 
         projectService.createProject(projectDTO);
-        return ResponseEntity.ok(Map.of("message", "Project successfully updated"));
+        return ResponseEntity.ok(Map.of("message", "Project successfully created"));
     }
 
+//    @GetMapping("/user-landing")
+//    public Iterable<Project> getAllUserProjects(){
+//        return projectService.getAllProjects();
+//    }
+
     @GetMapping("/user-landing")
-    public Iterable<Project> getAllUserProjects(){
-        return projectService.getAllProjects();
+    public ResponseEntity<Iterable<Project>> getProjectsByUserId(@RequestParam int userId) {
+        Iterable<Project> projects = projectService.getProjectsByUserId(userId);
+        return ResponseEntity.ok(projects);
+    }
+
+    @GetMapping("/update")
+    public ResponseEntity<Project> getProjectById(@RequestParam int projectId) {
+        Project project = projectService.getProjectById(projectId);
+        return ResponseEntity.ok(project);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -52,7 +66,7 @@ private final ProjectService projectService;
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<Map<String, String>> updateProject (@PathVariable Integer id, @Valid @RequestBody Project updatedProject, Errors errors) {
+    public ResponseEntity<Map<String, String>> updateProject (@PathVariable Integer id, @Valid @RequestBody UpdateProjectDTO updatedProjectDTO, Errors errors) {
         //Validation errors from @Valid using lambda expression
         if (errors.hasErrors()) {
             Map<String, String> validationErrors = new HashMap<>();
@@ -60,7 +74,7 @@ private final ProjectService projectService;
             return ResponseEntity.badRequest().body(validationErrors);
         }
 
-        projectService.updateProject(updatedProject, id);
+        projectService.updateProject(updatedProjectDTO, id);
         return ResponseEntity.ok(Map.of("message", "Project successfully updated"));
     }
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const CreateProject = () => {
   const [formData, setFormData] = useState({
@@ -20,7 +20,7 @@ const CreateProject = () => {
         setUserId(savedUserDTO.userDTOId);
       }
     } catch (error) {
-      console.log("Soemthing went wrong: ", error);
+      console.log("Something went wrong: ", error);
       alert("Something went wrong. Please try again.");
     }
   }, []);
@@ -32,6 +32,16 @@ const CreateProject = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!userId) {
+      alert("User information has not loaded yet. Please try again.");
+      return;
+    }
+
+    if (!formData.occasion || formData.occasion === "") {
+      alert("Occasion is required.");
+      return;
+    }
 
     try {
       const apiKeyUnsplash = import.meta.env.VITE_APP_API_KEY;
@@ -53,8 +63,10 @@ const CreateProject = () => {
       const inputData = {
         name: formData.name,
         photoUrl: photoResult,
-        totalSkeins: parseInt(formData.totalSkeins),
-        usedSkeins: parseInt(formData.usedSkeins),
+        totalSkeins: formData.totalSkeins
+          ? parseInt(formData.totalSkeins)
+          : null,
+        usedSkeins: formData.usedSkeins ? parseInt(formData.usedSkeins) : null,
         occasion: formData.occasion,
         targetDate: formData.targetDate,
         userId: userId,
@@ -67,13 +79,27 @@ const CreateProject = () => {
         },
         body: JSON.stringify(inputData),
       });
+
+      const saveProjectData = await saveProject.json();
+
       if (saveProject.ok) {
-        const saveProjectData = await saveProject.text();
-        console.log("Success:", saveProjectData);
+        console.log("Success:", saveProjectData.message);
         alert("Project created successfully");
+        setFormData({
+          name: "",
+          totalSkeins: "",
+          usedSkeins: "",
+          occasion: "",
+          targetDate: "",
+        });
       } else {
-        console.error("Error:", saveProject.status);
-        alert("Project creation failed");
+        //Object.entries() converts to an array
+
+        console.log(saveProjectData);
+        Object.entries(saveProjectData).forEach(([field, message]) => {
+          console.log(`${field}: ${message}`);
+          alert(`${message}`);
+        });
       }
     } catch (error) {
       console.error("Submission Error:", error);
@@ -98,7 +124,7 @@ const CreateProject = () => {
         <div>
           <label>Total Skeins: </label>
           <input
-            type="text"
+            type="number"
             name="totalSkeins"
             value={formData.totalSkeins}
             onChange={handleChange}
@@ -107,14 +133,14 @@ const CreateProject = () => {
         <div>
           <label>Used Skeins: </label>
           <input
-            type="text"
+            type="number"
             name="usedSkeins"
             value={formData.usedSkeins}
             onChange={handleChange}
           ></input>
         </div>
         <div>
-          <label>Occassion: </label>
+          <label>Occasion: </label>
           <input
             type="text"
             name="occasion"
@@ -135,6 +161,9 @@ const CreateProject = () => {
           </button>
         </div>
       </form>
+      <div>
+        <Link to="/user-landing">Return to User Landing</Link>
+      </div>
     </div>
   );
 };

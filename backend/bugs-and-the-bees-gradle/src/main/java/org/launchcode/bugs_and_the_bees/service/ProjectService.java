@@ -6,6 +6,7 @@ import org.launchcode.bugs_and_the_bees.data.UserRepository;
 import org.launchcode.bugs_and_the_bees.models.Project;
 import org.launchcode.bugs_and_the_bees.models.User;
 import org.launchcode.bugs_and_the_bees.models.dto.ProjectDTO;
+import org.launchcode.bugs_and_the_bees.models.dto.UpdateProjectDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,29 +40,40 @@ public class ProjectService {
         projectRepository.save(saveProject);
     }
 
-    public Iterable<Project> getAllProjects(){
-        return projectRepository.findAll();
+//    public Iterable<Project> getAllProjects(){
+//        return projectRepository.findAll();
+//    }
+
+    public Iterable<Project> getProjectsByUserId(int userId) {
+        return projectRepository.findByUserId(userId);
+    }
+
+    public Project getProjectById(int projectId) {
+        return projectRepository.findById(projectId);
     }
 
     public void deleteByProjectId(Integer id) {
         projectRepository.deleteById(id);
     }
 
-    public void updateProject(Project updatedProject, Integer id) {
+    public void updateProject(UpdateProjectDTO updatedProjectDTO, Integer id) {
         Optional<Project> optionalProject = projectRepository.findById(id);
+        Optional<User> optionalUser = userRepository.findById(updatedProjectDTO.getUserId());
+        if (optionalUser.isEmpty()) {
+            throw new IllegalArgumentException("User does not exist");
+        }
 
         if (optionalProject.isEmpty()) {
             throw new IllegalArgumentException("Project does not exist");
         }
-
+        User user = optionalUser.get();
         Project dbProject = optionalProject.get();
-        dbProject.setName(updatedProject.getName());
-        dbProject.setOccasion(updatedProject.getOccasion());
-        dbProject.setPhotoUrl(updatedProject.getPhotoUrl());
-        dbProject.setUsedSkeins(updatedProject.getUsedSkeins());
-        dbProject.setTotalSkeins(updatedProject.getTotalSkeins());
-        dbProject.setTargetDate(updatedProject.getTargetDate());
-        dbProject.setUser(updatedProject.getUser());
+        dbProject.setName(updatedProjectDTO.getName());
+        dbProject.setOccasion(updatedProjectDTO.getOccasion());
+        dbProject.setPhotoUrl(updatedProjectDTO.getPhotoUrl());
+        dbProject.setUsedSkeins(updatedProjectDTO.getUsedSkeins());
+        dbProject.setTotalSkeins(updatedProjectDTO.getTotalSkeins());
+        dbProject.setTargetDate(updatedProjectDTO.getTargetDate());
         projectRepository.save(dbProject);
     }
 }

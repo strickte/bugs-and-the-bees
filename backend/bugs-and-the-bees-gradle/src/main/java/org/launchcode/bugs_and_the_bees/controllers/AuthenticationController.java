@@ -119,5 +119,3 @@ public class AuthenticationController {
         return ResponseEntity.ok(Map.of("message", "Signed out successfully"));
     }
 }
-
-

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -40,6 +40,7 @@ const Login = () => {
         alert(message);
         // navigate("/user-landing");
       } else {
+        //Object.entries() converts to array
         Object.entries(loginUserData).forEach(([field, message]) => {
           console.log(`${field}: ${message}`);
           alert(`${message}`);
@@ -79,6 +80,9 @@ const Login = () => {
           <button type="submit" className="bg-green-600">
             Login
           </button>
+          {/* <div>
+            <Link to="/user-landing">Go to User Landing</Link>
+          </div> */}
         </div>
       </form>
     </div>

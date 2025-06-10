@@ -16,7 +16,7 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/update-project" element={<UpdateProject />}></Route>
+          <Route path="/update-project/:projectId" element={<UpdateProject />}></Route>
           <Route path="/create-project" element={<CreateProject />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/user-landing" element={<UserLanding />}></Route>
