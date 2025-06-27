@@ -49,7 +49,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Map<String, String>> processRegistrationForm(@RequestBody @Valid RegisterFormDTO registerFormDTO, Errors errors, HttpServletRequest request) {
+    public ResponseEntity<?> processRegistrationForm(@RequestBody @Valid RegisterFormDTO registerFormDTO, Errors errors, HttpServletRequest request) {
         Map<String, String> response = new HashMap<>();
 
         //Validation errors from @Valid using lambda expression
@@ -77,10 +77,12 @@ public class AuthenticationController {
        User newUser = new User(registerFormDTO.getUsername(), registerFormDTO.getPassword());
        userRepository.save(newUser);
 
-       //Set user in session
+       //Set user in session and send LoginResponseDTO
        setUserInSession(request.getSession(), newUser);
+       UserDTO userDTO = new UserDTO(newUser);
+       LoginResponseDTO responseDTO = new LoginResponseDTO("Registration and login successful!", userDTO);
 
-       return ResponseEntity.ok(Map.of("message", "Successfully registered and logged in"));
+       return ResponseEntity.ok(responseDTO);
     }
 
     @PostMapping("/login")
@@ -113,7 +115,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    @GetMapping("signout")
+    @GetMapping("/signout")
     public ResponseEntity<?> processSignout(HttpServletRequest request) {
         request.getSession().invalidate();
         return ResponseEntity.ok(Map.of("message", "Signed out successfully"));

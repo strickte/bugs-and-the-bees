@@ -93,8 +93,7 @@ const CreateProject = () => {
           targetDate: "",
         });
       } else {
-        //Object.entries() converts to an array
-
+        //Object.entries() converts to an arra
         console.log(saveProjectData);
         Object.entries(saveProjectData).forEach(([field, message]) => {
           console.log(`${field}: ${message}`);

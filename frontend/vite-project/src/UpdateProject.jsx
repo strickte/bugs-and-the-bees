@@ -15,8 +15,7 @@ const UpdateProject = () => {
     userId: "",
     // id: "",
   });
-  const [loading, setLoading] = useState(false);
-  // const [userId, setUserId] = useState("");
+
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -26,7 +25,6 @@ const UpdateProject = () => {
       }
 
       try {
-        setLoading(true);
         const response = await fetch(
           `http://localhost:8080/projects/update?projectId=${projectId}`,
           {
@@ -52,9 +50,7 @@ const UpdateProject = () => {
       } catch (error) {
         console.log("Something went wrong: ", error);
         alert("Something went wrong. Please try again.");
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
 
     fetchProject();

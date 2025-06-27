@@ -37,8 +37,10 @@ const UserRegistration = () => {
       const saveUserData = await saveUser.json();
 
       if (saveUser.ok) {
+        const userDTO = saveUserData.userDTO;
+        localStorage.setItem("userDTO", JSON.stringify(userDTO));
         const message = saveUserData.message;
-        console.log("Success:", message);
+        console.log("Success: ", message, "User: ", userDTO.userDTOName);
         alert(message);
         // navigate("/user-landing");
       } else {
