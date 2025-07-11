@@ -26,7 +26,7 @@ const UserLanding = () => {
 
     const fetchProjects = async () => {
       try {
-        setLoading(true);
+        // setLoading(true);
         const response = await fetch(
           `http://localhost:8080/projects/user-landing?userId=${userId}`,
           {
@@ -43,9 +43,10 @@ const UserLanding = () => {
       } catch (error) {
         console.log("Something went wrong: ", error);
         alert("Something went wrong. Please try again.");
-      } finally {
-        setLoading(false);
       }
+      // } finally {
+      //   setLoading(false);
+      // }
     };
 
     fetchProjects();
