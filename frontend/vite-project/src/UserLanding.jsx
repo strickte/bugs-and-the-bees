@@ -109,7 +109,10 @@ const UserLanding = () => {
                   <li>Occasion: {project.occasion}</li>
                   <li>Used skeins: {project.usedSkeins}</li>
                   <li>Total skeins: {project.totalSkeins}</li>
-                  <li>Target completion date: {project.targetDate}</li>
+                  <li>
+                    Target completion date:{" "}
+                    {new Date(project.targetDate).toLocaleDateString()}
+                  </li>
                   <li>
                     <img
                       className="rounded-full w-24 h-24 object-cover"
